@@ -44,7 +44,12 @@ class NameTable {
         if (result != null)
             return result;
 
-        int loc = lastIndexOf(name, delim, '$');
+        int loc;
+        if (name.endsWith("$")) {
+            loc = lastIndexOf(name.substring(0, name.length() - 2), delim, '$');
+        } else {
+            loc = lastIndexOf(name, delim, '$');
+        }
         String local = intern(name.substring(loc + 1));
         DotName prefix = loc < 1 ? null : convertToName(intern(name.substring(0, loc)), delim);
         result = new DotName(prefix, local, true, loc > 0 && name.charAt(loc) == '$');
